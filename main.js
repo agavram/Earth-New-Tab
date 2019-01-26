@@ -56,14 +56,12 @@ if (localStorage.getItem("lastFetch") === null || parseFloat(localStorage.getIte
     console.log("fetched")
     var index = 0;
     gjson.data.children.forEach(function (element) {
-        if (!element.data.stickied) {
-            if (element.data.preview.images[0].source.width > 1500) {
+            if (!element.data.stickied && element.data.preview.images[0].source.width / element.data.preview.images[0].source.height > 1.3 && element.data.preview.images[0].source.width > 1400) {
                 if (!links[index]) links[index] = []
                 links[index][0] = element.data.url;
                 links[index][1] = element.data.permalink;
                 index++;
             }
-        }
     });
     localStorage.setItem("linksArr", JSON.stringify(links))
 } else {
