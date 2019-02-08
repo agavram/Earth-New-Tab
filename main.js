@@ -19,38 +19,26 @@ function getRandomInt(min, max) {
     return Math.floor(Math.random() * (max - min + 1)) + min;
 }
 
+const clock = document.getElementById("ClockDisplay");
+
 function showTime() {
-    var date = new Date();
-    var h = date.getHours(); // 0 - 23
-    var m = date.getMinutes(); // 0 - 59
-    
-    var s = date.getSeconds(); // 0 - 59
-    var session = "AM";
+    var d = new Date();
+    var s = checkTime(d.getSeconds());
+    var m = checkTime(d.getMinutes());
+    var h = d.getHours();
 
-    if (h == 0) {
-        h = 12;
-    }
-
-    if (h > 12) {
-        h = h - 12;
-        session = "PM";
-    }
-
-    h = (h < 10) ? "0" + h : h;
-    m = (m < 10) ? "0" + m : m;
-    s = (s < 10) ? "0" + s : s;
-
-    var time;
-    if (localStorage.getItem("showSec") === "true") {
-        time = h + ":" + m + ":" + s + " " + session;
-    } else {
-        time = h + ":" + m + " " + session;
-    }
-
-    document.getElementById("ClockDisplay").innerText = time;
-    document.getElementById("ClockDisplay").textContent = time;
+    if (localStorage.getItem("showSec") === "true")
+        clock.innerText = h + ":" + m + ":" + s;
+    else
+        clock.innerText = h + ":" + m;
 }
 
+function checkTime(i) {
+    if (i < 10) {i = "0" + i};
+    return i;
+}
+
+// Call showTime() initially to make sure clock is instantly displayed
 showTime();
 setInterval(showTime, 1000);
 
@@ -75,7 +63,7 @@ if (localStorage.getItem("lastFetch") === null || parseFloat(localStorage.getIte
     links = JSON.parse(localStorage.getItem("linksArr"));
 }
 
-var rand = getRandomInt(1, links.length - 1);
+var rand = getRandomInt(0, links.length - 1);
 var url = links[rand][0];
 var img = document.getElementById("image");
 img.onload = function () {
