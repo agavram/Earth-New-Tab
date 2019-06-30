@@ -2,7 +2,6 @@
   "name": "Earth Images",
   "description": "New tab page that displays pictures from r/earthporn",
   "version": "0.1",
-  "incognito": "split",
   "chrome_url_overrides": {
     "newtab": "earth.html"
   },
