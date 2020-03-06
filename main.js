@@ -1,10 +1,4 @@
 window.addEventListener("load", function() {
-    function getRandomInt(min, max) {
-        min = Math.ceil(min);
-        max = Math.floor(max);
-        return Math.floor(Math.random() * (max - min + 1)) + min;
-    }
-
     const clock = document.getElementById("ClockDisplay");
 
     function showTime() {
@@ -29,7 +23,6 @@ window.addEventListener("load", function() {
     showTime();
     setInterval(showTime, 1000);
 
-    var json;
     var links = [[]];
 
     if (
@@ -69,9 +62,20 @@ window.addEventListener("load", function() {
         displayImage();
     }
 
+    function shuffle(a) {
+        var j, x, i;
+        for (i = a.length - 1; i > 0; i--) {
+            j = Math.floor(Math.random() * (i + 1));
+            x = a[i];
+            a[i] = a[j];
+            a[j] = x;
+        }
+        return a;
+    }
+
     function displayImage() {
-        var rand = getRandomInt(0, links.length - 1);
-        var url = links[rand][0];
+        var url = links[0][0];
+        
         var img = document.getElementById("image");
         img.onload = function() {
             fade(img, document.getElementById("ClockDisplay"));
@@ -79,7 +83,7 @@ window.addEventListener("load", function() {
         img.src = DOMPurify.sanitize(url);
 
         document.getElementById("reddit_link").href = DOMPurify.sanitize(
-            "https://www.reddit.com" + links[rand][1]
+            "https://www.reddit.com" + links[0][1]
         );
 
         function fade(element, element2) {
@@ -106,5 +110,12 @@ window.addEventListener("load", function() {
                 showTime();
             }
         };
+        
+        let first = links[0][0]
+
+        while (links[0][0] === first) {
+            shuffle(links)
+        }
+        localStorage.setItem("linksArr", JSON.stringify(links));
     }
 });
